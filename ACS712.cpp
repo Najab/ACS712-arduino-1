@@ -38,7 +38,15 @@ void ACS712::setSensitivity(float sens) {
 }
 
 float ACS712::getCurrentDC() {
-	float I = (zero - analogRead(pin)) / ADC_SCALE * VREF / sensitivity;
+	int raw = 0;
+    	for (int i = 1; i <= 150; i++) {
+		raw += analogRead(A0);
+		delay(10);
+    	}
+    	int rawValue = raw / 150;
+	Serial.println("\nAnalog Raw Value = " + String(rawValue) + "\n");
+	
+	float I = (zero - rawValue) / ADC_SCALE * VREF / sensitivity;
 	return I;
 }
 
